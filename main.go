@@ -55,7 +55,7 @@ func main() {
 func timespell() {
 	for range time.Tick(time.Hour * 2) {
 		updateList()
-		fmt.Println("Updated List")
+		fmt.Println("Updated Wumpi")
 		for w := 0; w+1 <= len(wumpus); w++ {
 			rand.Seed(time.Now().UnixNano())
 			//First Check if the Wumpus left so we don't run anything else if they have
@@ -131,9 +131,13 @@ func timespell() {
 				wumpus[w].Left = true
 			}
 
+			if wumpus[w].Health == 0 {
+				wumpus[w].Left = true
+			}
+
 			userKey := datastore.NameKey("User", keys[w].Name, nil)
 			if _, err := gcp.Put(ctx, userKey, &wumpus[w]); err != nil {
-				fmt.Println("==Warning==\nFailed to add Wumpus to Datastore")
+				fmt.Println("==Warning==\nFailed to update Wumpus in Datastore")
 				break
 			}
 		}
@@ -143,19 +147,19 @@ func timespell() {
 func agespell() {
 	for range time.Tick(time.Hour * 24) {
 		updateList()
-		fmt.Println("Updated List")
+		fmt.Println("Aged Wumpi")
 		for w := 0; w+1 <= len(wumpus); w++ {
 			if wumpus[w].Left == true {
 				continue
 			}
-			if wumpus[w].Age == 14 {
-				wumpus[w].Left = true
-				continue
-			}
 			wumpus[w].Age++
+			if wumpus[w].Age >= 14 {
+				wumpus[w].Age = 14
+				wumpus[w].Left = true
+			}
 			userKey := datastore.NameKey("User", keys[w].Name, nil)
 			if _, err := gcp.Put(ctx, userKey, &wumpus[w]); err != nil {
-				fmt.Println("==Warning==\nFailed to add Wumpus to Datastore")
+				fmt.Println("==Warning==\nFailed to update Wumpus in Datastore")
 				break
 			}
 		}
