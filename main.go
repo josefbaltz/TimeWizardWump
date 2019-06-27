@@ -89,7 +89,6 @@ func timespell() {
 			//If they are not sleeping and their energy is at or below 0 mark them as sleeping
 			if wumpus[w].Sleeping == true {
 				wumpus[w].Energy += 4
-				wumpus[w].Health++
 			} else if rand.Float32() < 0.75 {
 				wumpus[w].Energy--
 			}
