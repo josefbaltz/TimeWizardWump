@@ -92,7 +92,8 @@ func timespell() {
 				wumpus[w].Health++
 			} else if rand.Float32() < 0.75 {
 				wumpus[w].Energy--
-			} else if wumpus[w].Energy <= 0 {
+			}
+			if wumpus[w].Energy <= 0 {
 				wumpus[w].Sleeping = true
 			}
 			//Check if hunger is @ or below 0 if so reduce health and happiness by 1
